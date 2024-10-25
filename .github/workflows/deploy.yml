@@ -9,9 +9,9 @@ on:
 # 리전, 버킷 이름, CodeDeploy 앱 이름, CodeDeploy 배포 그룹 이름
 env:
   AWS_REGION: ap-northeast-2  # AWS 리전 (예: ap-northeast-2 -> 서울 리전)
-  S3_BUCKET_NAME: yoon-github-actions-s3-bucket  # S3 버킷 이름
+  S3_BUCKET_NAME: yoon-github-actinos-s3-bucket  # S3 버킷 이름
   CODE_DEPLOY_APPLICATION_NAME: my-codedeploy-app  # CodeDeploy 애플리케이션 이름
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: my-codedeploy-deployment-group  # CodeDeploy 배포 그룹 이름
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: my-codedeploy-development-group  # CodeDeploy 배포 그룹 이름
 
 permissions:
   contents: read
