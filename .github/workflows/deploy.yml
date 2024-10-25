@@ -18,10 +18,10 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
-    environment: production
-
+    defaults:
+      run:
+        working-directory: C:/Yoon_SpringBoot/Test_RDS/Test_rds # 실제 경로로 대체
     steps:
       # (1) 기본 체크아웃
       - name: Checkout
