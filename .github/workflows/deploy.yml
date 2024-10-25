@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  AWS_REGION: ap-northeast-2  # AWS 리전
+  AWS_REGION: ap-northeast-2  # AWS 리전 (예: ap-northeast-2 -> 서울 리전)
   S3_BUCKET_NAME: yoon-github-actions-s3-bucket  # S3 버킷 이름
   CODE_DEPLOY_APPLICATION_NAME: my-codedeploy-app  # CodeDeploy 애플리케이션 이름
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: my-codedeploy-deployment-group  # CodeDeploy 배포 그룹 이름
@@ -34,18 +34,18 @@ jobs:
 
       # (3) Gradle Wrapper에 실행 권한 추가
       - name: Make Gradle Wrapper executable
-        run: chmod +x ./Test_rds/gradlew  # 절대 경로로 gradlew 파일을 지정
+        run: chmod +x ./Test_rds/gradlew  # Test_rds 폴더 내 gradlew 파일에 실행 권한 추가
 
       # (4) Gradle 빌드 (Test 제외)
       - name: Build with Gradle
-        run: ./Test_rds/gradlew clean build -x test  # 절대 경로로 gradlew 실행
+        run: ./Test_rds/gradlew clean build -x test  # Test_rds 폴더 내 gradlew 파일 실행
 
-      # (5) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
+      # (5) AWS 인증
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # AWS Access Key ID
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # AWS Secret Access Key
           aws-region: ${{ env.AWS_REGION }}
 
       # (6) 빌드 결과물을 S3 버킷에 업로드
@@ -55,7 +55,7 @@ jobs:
             --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
             --ignore-hidden-files \
             --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
-            --source ./Test_rds  # 소스 경로를 명시
+            --source ./Test_rds  # Test_rds 폴더에서 소스 파일을 가져옵니다.
 
       # (7) S3 버킷에 있는 파일을 대상으로 CodeDeploy 실행
       - name: Deploy to AWS EC2 from S3
