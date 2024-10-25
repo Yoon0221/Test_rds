@@ -5,10 +5,8 @@ on:
     branches:
       - main
 
-# 본인이 설정한 값을 여기서 채워넣습니다.
-# 리전, 버킷 이름, CodeDeploy 앱 이름, CodeDeploy 배포 그룹 이름
 env:
-  AWS_REGION: ap-northeast-2  # AWS 리전 (예: ap-northeast-2 -> 서울 리전)
+  AWS_REGION: ap-northeast-2  # AWS 리전 (예: 서울 리전)
   S3_BUCKET_NAME: yoon-github-actions-s3-bucket  # S3 버킷 이름
   CODE_DEPLOY_APPLICATION_NAME: my-codedeploy-app  # CodeDeploy 애플리케이션 이름
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: my-codedeploy-deployment-group  # CodeDeploy 배포 그룹 이름
@@ -18,10 +16,14 @@ permissions:
 
 jobs:
   deploy:
+    name: Deploy
     runs-on: ubuntu-latest
+    environment: production
+
     defaults:
       run:
-        working-directory: C:/Yoon_SpringBoot/Test_RDS/Test_rds # 실제 경로로 대체
+        working-directory: Test_rds  # Test_rds를 루트로 설정합니다.
+
     steps:
       # (1) 기본 체크아웃
       - name: Checkout
@@ -46,8 +48,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # AWS Access Key ID
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # AWS Secret Access Key
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       # (6) 빌드 결과물을 S3 버킷에 업로드
